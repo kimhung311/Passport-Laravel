@@ -43,9 +43,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function user()
+    public function posts()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Post::class);
     }
 
     public function comments()
@@ -53,8 +53,12 @@ class User extends Authenticatable
         return $this->hasMany(User::class);
     }
 
+    // public function roles()
+    // {
+    //     return $this->belongsTo(Role::class);
+    // }
     public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 }
