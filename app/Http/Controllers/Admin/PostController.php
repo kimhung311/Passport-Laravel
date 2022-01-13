@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -15,12 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-        $data = [];
-        $posts = Post::paginate(10);
-        $data['posts'] = $posts;
-        // dd($data);
-        return view('Admin.Post.index', $data);
+       $posts = DB::table('posts')
+        ->join('categories', 'posts.category_id', '=', 'categories.id')
+        ->join('users', 'posts.user_id', '=', 'users.id')->paginate(8);
+        return view('Admin.Post.index', compact('posts'));
     }
 
     /**

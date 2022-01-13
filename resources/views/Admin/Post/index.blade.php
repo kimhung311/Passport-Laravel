@@ -26,17 +26,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($posts as $item)
+            @foreach ($posts as $key => $item)
                 <tr>
+                    <td>{{ $key+1 }}</td>
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->content }}</td>
                     <td>{{ $item->description }}</td>
                     <td>{{ $item->image }}</td>
                     <td>{{ $item->image_detail }}</td>
                     <td>{{ $item->total_view }}</td>
-                    <td>{{ $item->hot }}</td>
-                    <td>{{ $item->category_id}}</td>
-                    <td>{{ $item->user_id }}</td>
+                    <td>
+                        @if($item->hot =='1')         
+                        {{  'Hot New' }}
+                        @endif
+                    </td>
+                    <td>{{ $item->category_name }}</td>
+                    <td>{{ $item->name}}</td>
                 </tr>
             @endforeach
         </tbody>

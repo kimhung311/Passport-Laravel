@@ -1,7 +1,9 @@
 <?php
 
+namespace App\Http\Controllers\Api\V1;
+
 use App\Http\Controllers\Api\V1\UserController;
-use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
