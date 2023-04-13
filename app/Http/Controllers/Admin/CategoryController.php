@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class CategoryController extends Controller
      *  
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request)
     {
         // $category = Category::find(8);
         // return $category;
@@ -34,6 +35,15 @@ class CategoryController extends Controller
         // $category->user_id = 4;
         // $category->save();
         // return $category;    
+        $curr_page = isset($request->page) ? $request->page : 1;
+        $users = $this->userRepo->getAll()->all();
+        $total = count($users);
+        $limit = 10;
+        $offset = ($curr_page - 1) * $limit;
+        $paginate = new LengthAwarePaginator($users, $total, $limit);
+        $users = array_slice($users, $offset, $limit);
+        $paginate->withPath('/CRUD/public/user');
+        return view('users.index', compact('users', 'paginate'));
     }
 
     /**

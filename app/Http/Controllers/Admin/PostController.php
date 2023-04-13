@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -14,12 +15,39 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       $posts = DB::table('posts')
-        ->join('categories', 'posts.category_id', '=', 'categories.id')
-        ->join('users', 'posts.user_id', '=', 'users.id')->paginate(8);
-        return view('Admin.Post.index', compact('posts'));
+        $curr_page = isset($request->page) ? $request->page : 1;
+        $posts = Post::get()->all();
+        $total = count($posts);
+        $limit = 10;
+        $offset = ($curr_page - 1) * $limit;
+        $paginate = new LengthAwarePaginator($posts, $total, $limit);
+        $posts = array_slice($posts, $offset, $limit);
+        // $paginate->withPath('/CRUD/public/user');
+        // return view('users.index', compact('users', 'paginate'));
+
+        return view('Admin.Post.index', compact('posts', 'paginate'));
+
+
+        
+        
+        //    $posts = DB::table('posts')
+        //     ->join('categories', 'posts.category_id', '=', 'categories.id')
+        //     ->join('users', 'posts.user_id', '=', 'users.id')->get();
+        
+        // $posts = DB::table('posts')->find(3);
+
+        // return view('Admin.Post.index', compact('posts'));
+
+//  paginate
+        // $data = [];
+        // $posts = Post::paginate(10)->withQueryString(); // withQueryString để add thêm tất cả các query string trên URL hiện tại vào trong paginate
+
+        // $posts->appends(['sort' => 'votes']); //có thể sử dụng phương thức appends để add thêm query string vào URL.
+        // $data['posts'] =  $posts;
+        // return view('Admin.Post.index', compact('posts'));
+
     }
 
     /**

@@ -27,7 +27,7 @@ class PostSeeder extends Seeder
                 'total_view' => rand(0, 100),
                 'hot' => rand(0, 1),
                 'category_id' => rand(4,10),
-                // 'author_id' => 4,
+                'author_id' => 4,
                 'user_id' => 3,
                 'created_at' => $date,
                 'updated_at' => $date,
